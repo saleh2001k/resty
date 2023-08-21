@@ -6,6 +6,6 @@ In its initial development phase, the application seeks to mimic a React web pag
 ### UML
 ![alt](assets/GET.png)
 
-### Live URL: [here](https://)
+### Live URL: [here](https://illustrious-alpaca-f69a7d.netlify.app/)
 
-#### PR : [here](https://)
+#### PR : [here](https://github.com/saleh2001k/resty/pull/1)
