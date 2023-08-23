@@ -1,33 +1,100 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import "./Form.scss";
 
-const Form = ({ handleApiCall }) => {
-  const formRef = React.createRef();
+const Form = ({ handleApiCall, loading }) => {
+  const [formData, setFormData] = useState({ method: "GET", url: "", body: "" });
+  const [urlError, setUrlError] = useState(false);
+
+  useEffect(() => {
+    setUrlError(false); 
+  }, [formData.url]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = {
-      method: "GET",
-      url: "https://pokeapi.co/api/v2/pokemon",
-    };
-    handleApiCall(formData);
+
+    if (isValidUrl(formData.url)) {
+      handleApiCall(formData);
+    } else {
+      setUrlError(true);
+    }
+  };
+
+  const handleMethodClick = (method) => {
+    setFormData({ ...formData, method });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const isValidUrl = (url) => {
+    const urlPattern = /^https?:\/\/\S+/;
+    return urlPattern.test(url);
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit} ref={formRef}>
+      <form onSubmit={handleSubmit}>
         <label>
           <span>URL: </span>
-          <input name="url" type="text" />
-          <button type="submit">GO!</button>
+          <input
+            name="url"
+            type="text"
+            value={formData.url}
+            onChange={handleInputChange}
+            disabled={loading}
+          />
         </label>
-        <label className="methods">
-          <span id="get">GET</span>
-          <span id="post">POST</span>
-          <span id="put">PUT</span>
-          <span id="delete">DELETE</span>
-        </label>
+        {urlError && <div className="error">Invalid URL. Please enter a valid URL.</div>}
+        <div className="methods">
+          <button
+            type="button"
+            onClick={() => handleMethodClick("GET")}
+            className={formData.method === "GET" ? "active" : ""}
+            disabled={loading}
+          >
+            GET
+          </button>
+          <button
+            type="button"
+            onClick={() => handleMethodClick("POST")}
+            className={formData.method === "POST" ? "active" : ""}
+            disabled={loading}
+          >
+            POST
+          </button>
+          <button
+            type="button"
+            onClick={() => handleMethodClick("PUT")}
+            className={formData.method === "PUT" ? "active" : ""}
+            disabled={loading}
+          >
+            PUT
+          </button>
+          <button
+            type="button"
+            onClick={() => handleMethodClick("DELETE")}
+            className={formData.method === "DELETE" ? "active" : ""}
+            disabled={loading}
+          >
+            DELETE
+          </button>
+          </div>
+        {(formData.method === "POST" || formData.method === "PUT") && (
+          <label>
+            <span>Request Body: </span>
+            <textarea
+              name="body"
+              value={formData.body}
+              onChange={handleInputChange}
+              disabled={loading}
+            ></textarea>
+          </label>
+        )}
+        <button type="submit" disabled={loading}>
+          {loading ? "Loading..." : "GO!"}
+        </button>
       </form>
     </>
   );
