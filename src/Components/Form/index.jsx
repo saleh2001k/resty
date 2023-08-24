@@ -6,7 +6,7 @@ const Form = ({ handleApiCall, loading }) => {
   const [urlError, setUrlError] = useState(false);
 
   useEffect(() => {
-    setUrlError(false); 
+    setUrlError(false);
   }, [formData.url]);
 
   const handleSubmit = (e) => {
@@ -46,12 +46,16 @@ const Form = ({ handleApiCall, loading }) => {
             disabled={loading}
           />
         </label>
-        {urlError && <div className="error">Invalid URL. Please enter a valid URL.</div>}
+        {urlError && (
+          <div className="error">Invalid URL. Please enter a valid URL.</div>
+        )}
         <div className="methods">
           <button
             type="button"
             onClick={() => handleMethodClick("GET")}
-            className={formData.method === "GET" ? "active" : ""}
+            className={`method-button ${
+              formData.method === "GET" ? "active" : ""
+            }`}
             disabled={loading}
           >
             GET
@@ -59,7 +63,9 @@ const Form = ({ handleApiCall, loading }) => {
           <button
             type="button"
             onClick={() => handleMethodClick("POST")}
-            className={formData.method === "POST" ? "active" : ""}
+            className={`method-button ${
+              formData.method === "POST" ? "active" : ""
+            }`}
             disabled={loading}
           >
             POST
@@ -67,7 +73,9 @@ const Form = ({ handleApiCall, loading }) => {
           <button
             type="button"
             onClick={() => handleMethodClick("PUT")}
-            className={formData.method === "PUT" ? "active" : ""}
+            className={`method-button ${
+              formData.method === "PUT" ? "active" : ""
+            }`}
             disabled={loading}
           >
             PUT
@@ -75,12 +83,14 @@ const Form = ({ handleApiCall, loading }) => {
           <button
             type="button"
             onClick={() => handleMethodClick("DELETE")}
-            className={formData.method === "DELETE" ? "active" : ""}
+            className={`method-button ${
+              formData.method === "DELETE" ? "active" : ""
+            }`}
             disabled={loading}
           >
             DELETE
           </button>
-          </div>
+        </div>
         {(formData.method === "POST" || formData.method === "PUT") && (
           <label>
             <span>Request Body: </span>
