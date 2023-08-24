@@ -8,4 +8,4 @@ In its initial development phase, the application seeks to mimic a React web pag
 
 ### Live URL: [here](https://illustrious-alpaca-f69a7d.netlify.app/)
 
-#### PR : [here](https://github.com/saleh2001k/resty/pull/1)
+#### PR : [here](https://github.com/saleh2001k/resty/pull/4)

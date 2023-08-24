@@ -1,15 +1,26 @@
 section {
-    background-color: #333;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin: 20px 0;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    
-    pre {
-      overflow-x: auto; 
-      white-space: pre-wrap; 
-      font-size: 14px; 
-      color: #fff; 
-    }
-  }
+  background-color: rgb(39, 40, 34);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 20px auto; 
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 90%;
+  display: flex;
+  flex-direction: column; 
+}
+
+pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-size: 14px;
+  color: #fff;
+}
+
+h2 {
+  color: #fff;
+}
+
+h3 {
+  color: aqua;
+}
