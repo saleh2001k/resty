@@ -37,7 +37,7 @@ function App() {
   return (
     <React.Fragment>
       <Header />
-      <Form handleApiCall={setRequest} loading={loading} /> {/* Pass setRequest as a callback */}
+      <Form handleApiCall={setRequest} loading={loading} />
       <Results data={data} loading={loading} requestParams={requestParams} selectedMethod={selectedMethod} />
       <Footer />
     </React.Fragment>
