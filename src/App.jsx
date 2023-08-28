@@ -1,44 +1,87 @@
-import React, { useState, useEffect } from "react";
+import React, { useReducer, useEffect } from "react";
 import axios from "axios";
 import "./App.scss";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Form from "./Components/Form";
 import Results from "./Components/Results";
+import History from "./Components/History";
+
+const initialState = {
+  data: { body: null, headers: null },
+  requestParams: { method: "", url: "" },
+  loading: false,
+  selectedMethod: "",
+  history: [],
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_DATA":
+      return { ...state, data: action.payload };
+    case "SET_REQUEST_PARAMS":
+      return { ...state, requestParams: action.payload };
+    case "SET_LOADING":
+      return { ...state, loading: action.payload };
+    case "SET_SELECTED_METHOD":
+      return { ...state, selectedMethod: action.payload };
+    case "ADD_TO_HISTORY":
+      return { ...state, history: [action.payload, ...state.history] };
+    default:
+      return state;
+  }
+};
 
 function App() {
-  const [data, setData] = useState({ body: null, headers: null });
-  const [requestParams, setRequestParams] = useState({ method: "", url: "" });
-  const [loading, setLoading] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState(""); 
-  const [request, setRequest] = useState(null); 
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    if (request) {
+    if (state.requestParams) {
       const callApi = async () => {
         try {
-          setLoading(true);
-          const response = await axios(request);
+          dispatch({ type: "SET_LOADING", payload: true });
+          const response = await axios(state.requestParams);
 
-          setData({ body: response.data, headers: response.headers });
-          setRequestParams(request);
-          setSelectedMethod(request.method);
+          dispatch({
+            type: "SET_DATA",
+            payload: { body: response.data, headers: response.headers },
+          });
+          dispatch({
+            type: "SET_REQUEST_PARAMS",
+            payload: state.requestParams,
+          });
+          dispatch({
+            type: "SET_SELECTED_METHOD",
+            payload: state.requestParams.method,
+          });
+          dispatch({ type: "ADD_TO_HISTORY", payload: state.requestParams });
         } catch (error) {
           console.error("Error calling API:", error);
         } finally {
-          setLoading(false);
+          dispatch({ type: "SET_LOADING", payload: false });
         }
       };
 
       callApi();
     }
-  }, [request]);
+  }, [state.requestParams]);
 
   return (
     <React.Fragment>
       <Header />
-      <Form handleApiCall={setRequest} loading={loading} />
-      <Results data={data} loading={loading} requestParams={requestParams} selectedMethod={selectedMethod} />
+      <Form
+        handleApiCall={(requestData) =>
+          dispatch({ type: "SET_REQUEST_PARAMS", payload: requestData })
+        }
+        loading={state.loading}
+      />
+      <Results
+        data={state.data}
+        loading={state.loading}
+        requestParams={state.requestParams}
+        selectedMethod={state.selectedMethod}
+      />
+      <History history={state.history} dispatch={dispatch} />
       <Footer />
     </React.Fragment>
   );
