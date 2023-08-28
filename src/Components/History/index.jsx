@@ -1,5 +1,5 @@
-import React from 'react';
-import './History.scss';
+import React from "react";
+import "./History.scss";
 
 function History({ history, dispatch }) {
   return (
@@ -10,15 +10,21 @@ function History({ history, dispatch }) {
           <li key={index} className="history-item">
             <div className="history-details">
               <span className="history-method">Method: </span>
-              <span className="method-text" style={{ color: getMethodColor(entry.method) }}>{entry.method}</span>
+              <span
+                className="method-text"
+                style={{ color: getMethodColor(entry.method) }}
+              >
+                {entry.method}
+              </span>
               <br />
               <span className="history-url"> URL: </span>
               <span>{entry.url}</span>
-
             </div>
             <button
               className="history-re-run-button"
-              onClick={() => dispatch({ type: "SET_REQUEST_PARAMS", payload: entry })}
+              onClick={() =>
+                dispatch({ type: "SET_REQUEST_PARAMS", payload: entry })
+              }
             >
               Re-run
             </button>
@@ -32,11 +38,11 @@ function History({ history, dispatch }) {
 function getMethodColor(method) {
   switch (method) {
     case "GET":
-      return "green"; 
+      return "green";
     case "POST":
-      return "yellow"; 
+      return "yellow";
     case "PUT":
-      return "blue"; 
+      return "blue";
     case "DELETE":
       return "red";
     default:
